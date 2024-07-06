@@ -3,6 +3,86 @@
 @tailwind utilities;
 
 :root {
+  --base03: #002b36;
+  --base02: #073642;
+  --base01: #586e75;
+  --base00: #657b83;
+  --base0: #839496;
+  --base1: #93a1a1;
+  --base2: #eee8d5;
+  --base3: #fdf6e3;
+  --yellow: #b58900;
+  --orange: #cb4b16;
+  --red: #dc322f;
+  --magenta: #d33682;
+  --violet: #6c71c4;
+  --blue: #268bd2;
+  --cyan: #2aa198;
+  --green: #859900;
+}
+
+html,
+.light {
+  background-color: var(--base3);
+  color: var(--base0);
+}
+
+html *,
+.light * {
+  color: var(--base0);
+}
+
+html h1,
+html h2,
+html h3,
+html h4,
+html h5,
+html h6,
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+  color: var(--base1);
+  border-color: var(--base0);
+}
+
+html a,
+html a:active,
+html a:visited,
+.light a,
+.light a:active,
+.light a:visited {
+  color: var(--base1);
+}
+
+.dark {
+  background-color: var(--base03);
+  color: var(--base0);
+}
+
+.dark * {
+  color: var(--base0);
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--base1);
+  border-color: var(--base0);
+}
+
+.dark a,
+.dark a:active,
+.dark a:visited {
+  color: var(--base1);
+}
+
+:root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -14,118 +94,4 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-$base03: #002b36;
-$base02: #073642;
-$base01: #586e75;
-$base00: #657b83;
-$base0: #839496;
-$base1: #93a1a1;
-$base2: #eee8d5;
-$base3: #fdf6e3;
-$yellow: #b58900;
-$orange: #cb4b16;
-$red: #dc322f;
-$magenta: #d33682;
-$violet: #6c71c4;
-$blue: #268bd2;
-$cyan: #2aa198;
-$green: #859900;
-@mixin rebase(
-  $rebase03,
-  $rebase02,
-  $rebase01,
-  $rebase00,
-  $rebase0,
-  $rebase1,
-  $rebase2,
-  $rebase3
-) {
-  background-color: $rebase03;
-  color: $rebase0;
-  * {
-    color: $rebase0;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: $rebase1;
-    border-color: $rebase0;
-  }
-  a,
-  a:active,
-  a:visited {
-    color: $rebase1;
-  }
-}
-@mixin accentize($accent) {
-  a,
-  a:active,
-  a:visited,
-  code.url {
-    color: $accent;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: $accent;
-  }
-}
-/* light is default mode, so pair with general html definition */
-html,
-.light {
-  @include rebase(
-    $base3,
-    $base2,
-    $base1,
-    $base0,
-    $base00,
-    $base01,
-    $base02,
-    $base03
-  );
-}
-.dark {
-  @include rebase(
-    $base03,
-    $base02,
-    $base01,
-    $base00,
-    $base0,
-    $base1,
-    $base2,
-    $base3
-  );
-}
-html * {
-  color-profile: sRGB;
-  rendering-intent: auto;
-}
-
-
-h1 {
-  color: var(--base3)
 }
