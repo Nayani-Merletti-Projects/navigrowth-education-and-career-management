@@ -25,6 +25,10 @@
   height: 100px;
   display: flex;
   flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
 }
 
@@ -56,8 +60,8 @@
 .menu-icon-button:hover { 
   cursor: pointer;
   background-color: var(--cyan);
-  margin-left: -1px;
 }
+
 
 .Website-Title {
 
@@ -86,7 +90,7 @@
   justify-content: center;
   font-size: 15px;
   padding-left: 3px;
-  transition: background-color 0.3s;
+  transition: background-color 0.4s;
 
 }
 
@@ -102,3 +106,5 @@
 }
 
 /* End of Header CSS */
+
+
