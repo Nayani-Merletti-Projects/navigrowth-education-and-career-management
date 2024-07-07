@@ -21,8 +21,13 @@
 
 body {
 
-font-family: Mukta, Arial;
-background-color: var(--magenta);
-margin: 0;
+  font-family: Mukta, Arial;
+  background-color: var(--magenta);
+  margin: 0;
+  color: white;
 
 }
+
+
+
+
