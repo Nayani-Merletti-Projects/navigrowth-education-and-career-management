@@ -1,29 +1,46 @@
 
 
-const navbar = document.querySelector('.js-navbar');
-
-document.querySelector('.js-menu-button')
+/*document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.js-menu-button')
   .addEventListener('click', () => {
 
-    setTimeout(toggleNavBar, 100);
+    setTimeout(toggleNavBar, 120);
 
   });
+})*/
+  
+document.addEventListener('DOMContentLoaded', () => {
 
+  const menuButton = document.querySelector('.js-menu-button');
+  const navbar = document.querySelector('.js-navbar');
+
+  if (!localStorage.getItem('navbar')) {
+    localStorage.setItem('navbar', navBarHTML());
+  }
+
+  navbar.innerHTML = '';
+  //localStorage.setItem('navbarOpen', 'false');
+  
+  if (menuButton && navbar) {
+    menuButton.addEventListener('click', () => {
+      setTimeout(toggleNavBar, 120);
+    });
+  }
+});
 
 function toggleNavBar() {
     
-    
-    const menuButtonElem = document.querySelector('.js-menu-button');
+  const navbar = document.querySelector('.js-navbar');
+  const navBarhtml = localStorage.getItem('navbar') || navBarHTML();
 
-    if (navbar.innerHTML === '') {
-      navbar.innerHTML = navBarHTML();
-    } else {
-      navbar.innerHTML = '';
-    }
-  
+  if (navbar.innerHTML === '') {
+    navbar.innerHTML = navBarhtml;
+    //localStorage.setItem('navbarOpen', 'true');
+  } else {
+    navbar.innerHTML = '';
+    //localStorage.setItem('navbarOpen', 'false');
+  }
 }
-
-
   
 function navBarHTML() { 
 
