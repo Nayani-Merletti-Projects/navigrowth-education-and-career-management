@@ -1,5 +1,3 @@
-
-
 /*document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-menu-button')
   .addEventListener('click', () => {
@@ -8,43 +6,40 @@
 
   });
 })*/
-  
-document.addEventListener('DOMContentLoaded', () => {
 
-  const menuButton = document.querySelector('.js-menu-button');
-  const navbar = document.querySelector('.js-navbar');
+document.addEventListener("DOMContentLoaded", () => {
+  const menuButton = document.querySelector(".js-menu-button");
+  const navbar = document.querySelector(".js-navbar");
 
-  if (!localStorage.getItem('navbar')) {
-    localStorage.setItem('navbar', navBarHTML());
+  if (!localStorage.getItem("navbar")) {
+    localStorage.setItem("navbar", navBarHTML());
   }
 
-  navbar.innerHTML = '';
+  navbar.innerHTML = "";
   //localStorage.setItem('navbarOpen', 'false');
-  
+
   if (menuButton && navbar) {
-    menuButton.addEventListener('click', () => {
+    menuButton.addEventListener("click", () => {
       setTimeout(toggleNavBar, 120);
     });
   }
 });
 
 function toggleNavBar() {
-    
-  const navbar = document.querySelector('.js-navbar');
-  const navBarhtml = localStorage.getItem('navbar') || navBarHTML();
+  const navbar = document.querySelector(".js-navbar");
+  const navBarhtml = localStorage.getItem("navbar") || navBarHTML();
 
-  if (navbar.innerHTML === '') {
+  if (navbar.innerHTML === "") {
     navbar.innerHTML = navBarhtml;
     //localStorage.setItem('navbarOpen', 'true');
   } else {
-    navbar.innerHTML = '';
+    navbar.innerHTML = "";
     //localStorage.setItem('navbarOpen', 'false');
   }
 }
-  
-function navBarHTML() { 
 
-      return `
+function navBarHTML() {
+  return `
 
       <nav class="navbar">
 
@@ -92,7 +87,4 @@ function navBarHTML() {
           </div>
         </a> 
       </nav>`;
-
 }
-
-
