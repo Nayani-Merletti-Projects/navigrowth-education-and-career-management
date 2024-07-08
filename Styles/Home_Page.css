@@ -22,6 +22,7 @@
 
 .Homepage-header {
 
+  background-color: var(--magenta);
   height: 100px;
   display: flex;
   flex-direction: row;
@@ -34,7 +35,7 @@
 
 .menu {
 
-  flex: 1;
+  width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +52,7 @@
 
 .menu-icon-button {
   width: 140px;
-  height: 100px;
+  height: 100%;
   background-color: transparent;
   border: none;
   transition: background-color 0.3s;
@@ -105,6 +106,66 @@
 
 }
 
+
+@media (max-width: 735px) {
+  .title-text {
+    font-size: 38px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--base02);
+    padding-left: 40px;
+    padding-top: 20px;
+  }
+}
+
 /* End of Header CSS */
 
+/* Body-text CSS*/
 
+.body-text {
+
+  background-color: lightblue;
+  margin-top: 250px;
+  margin-left: 150px;
+  margin-right: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.home-msg {
+
+  font-size: 70px;
+
+}
+
+.homepage-goal-header {
+
+  text-decoration: underline var(--green);
+  color: var(--base03);
+  font-size: 60px;
+  
+}
+
+.homepage-goal-tracker {
+
+  background-color: lightcoral;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.no-goals-msg {
+
+  font-size: 25px;
+
+}
+
+.no-goals-link {
+
+  color: white;
+  text-decoration: underline white;
+
+}
