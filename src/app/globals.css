@@ -21,6 +21,10 @@
   --green: #859900;
 }
 
+body {
+  font-family: "Mukta", sans-serif;
+}
+
 html,
 .light {
   background-color: var(--base3);
