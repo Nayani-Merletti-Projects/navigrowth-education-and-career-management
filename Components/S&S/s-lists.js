@@ -1,4 +1,3 @@
+const strengthsList = JSON.parse(localStorage.getItem("strengthList")) || [];
 
-const strengthsList = JSON.parse(localStorage.getItem('strengthList')) || [];
-
-export {strengthsList};
+export { strengthsList };
