@@ -1,0 +1,3 @@
+const strengthsList = [];
+
+export { strengthsList };
