@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "../Styles/NavBar.module.css";
+import styles from "../src/app/Styles/NavBar.module.css";
 import {
   HomeIcon,
   AcademicCapIcon,
@@ -12,11 +12,11 @@ import {
 
 const navItems = [
   { href: "/", Icon: HomeIcon, text: "Home" },
-  { href: "/Skills", Icon: AcademicCapIcon, text: "Skills/Strengths" },
-  { href: "/Goals", Icon: FlagIcon, text: "Goals" },
-  { href: "/Paths", Icon: MapIcon, text: "Paths/Opportunities" },
-  { href: "/Chat", Icon: ChatBubbleLeftRightIcon, text: "Chat" },
-  { href: "/Account", Icon: UserCircleIcon, text: "Account" },
+  { href: "/skills", Icon: AcademicCapIcon, text: "Skills/Strengths" },
+  { href: "/goals", Icon: FlagIcon, text: "Goals" },
+  { href: "paths", Icon: MapIcon, text: "Paths/Opportunities" },
+  { href: "/chat", Icon: ChatBubbleLeftRightIcon, text: "Chat" },
+  { href: "/account", Icon: UserCircleIcon, text: "Account" },
 ];
 
 export function NavBar() {

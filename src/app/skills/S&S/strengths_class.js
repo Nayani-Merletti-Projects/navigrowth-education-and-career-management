@@ -35,8 +35,6 @@ export function updateStrengthsDisplay() {
       </div>  `;
   });
 
-  localStorage.setItem("strengthList", JSON.stringify(strengthsList));
-
   console.log(strengthsList);
 
   document.querySelectorAll(`.js-remove-strength-button`).forEach((button) => {

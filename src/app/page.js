@@ -2,8 +2,8 @@ import Link from "next/link";
 import React from "react";
 import { NavBar } from "../../Components/NavBar";
 
-import "../../Styles/home_page.css";
-import "../../Styles/mukta.css";
+import "./Styles/Home_Page.css";
+import "./Styles/mukta.css";
 
 export default function Home() {
   return (

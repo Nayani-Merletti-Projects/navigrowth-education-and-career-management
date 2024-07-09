@@ -1,13 +1,10 @@
-import {
-  addStrengthInputHTML,
-  Strengths,
-  /*strengthsList,*/ updateStrengthsDisplay,
-} from "./S&S/strengths_class.js";
+import {addStrengthInputHTML, Strengths, updateStrengthsDisplay,} 
+  from "./S&S/strengths_class.js";
 import { strengthsList } from "./S&S/s-lists.js";
 
 updateStrengthsDisplay();
 
-function createEventListener() {
+export function createEventListener() {
   document.querySelector(".js-create-button").addEventListener("click", () => {
     const nameInput = document.querySelector(".js-strength-name-input");
     const descriptionInput = document.querySelector(
@@ -34,18 +31,21 @@ function createEventListener() {
   });
 }
 
-document
-  .querySelector(".js-add-strength-button")
-  .addEventListener("click", () => {
-    const inputHTML = addStrengthInputHTML();
-    const inputSection = document.querySelector(".js-strength-input-section");
 
-    if (!inputSection.classList.contains("s_s-input-section")) {
-      inputSection.innerHTML = inputHTML;
-      inputSection.classList.add("s_s-input-section");
-      createEventListener();
-    } else {
-      inputSection.innerHTML = "";
-      inputSection.classList.remove("s_s-input-section");
-    }
-  });
+export function addStrengthHTML() {
+
+  document.querySelector(".js-add-strength-button")
+    .addEventListener("click", () => {
+      const inputHTML = addStrengthInputHTML();
+      const inputSection = document.querySelector(".js-strength-input-section");
+
+      if (!inputSection.classList.contains("s_s-input-section")) {
+        inputSection.innerHTML = inputHTML;
+        inputSection.classList.add("s_s-input-section");
+        createEventListener();
+      } else {
+        inputSection.innerHTML = "";
+        inputSection.classList.remove("s_s-input-section");
+      }
+    });
+  }
