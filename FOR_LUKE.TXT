@@ -2,3 +2,8 @@ in the skills folder (S&S subfolder) in the app directory make skills and streng
 backend and save it in the database. Also, could you fix some issues with the javascript
 for this page. I directly linked the js functions into the page.js file for the skills page
 so, but vanilla js is an issue and IDK how to change this.
+
+
+
+
+Save the created goals in the database and display it in the homepage if there are pending goals.
