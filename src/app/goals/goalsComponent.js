@@ -139,7 +139,3 @@ export default function GoalsComponent() {
     </div>
   );
 }
-
-
-
-      
