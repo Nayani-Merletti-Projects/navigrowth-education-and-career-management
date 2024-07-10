@@ -1,0 +1,124 @@
+/* goals.css */
+.goalsContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.goalButtons {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.addGoalButton, .cancelGoalButton, .submitGoalButton, .finishGoalButton, .addSubstepButton, .completeSubstepButton {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.cancelGoalButton {
+  background-color: #f44336;
+}
+
+.addGoalButton:hover, .submitGoalButton:hover, .addSubstepButton:hover {
+  background-color: #0056b3;
+}
+
+.cancelGoalButton:hover {
+  background-color: #d32f2f;
+}
+
+.goalForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.goalInput {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.goalsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.goalItem {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.goalTitle {
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.substepsList {
+  margin-top: 10px;
+}
+
+.substep {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #ffffff;
+  border-radius: 3px;
+}
+
+.substep.completed {
+  opacity: 0.6;
+}
+
+.progressBar {
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease-in-out;
+}
+
+.doneMessage {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.finishGoalButton {
+  background-color: #4CAF50;
+  margin-top: 10px;
+}
+
+.finishGoalButton:hover {
+  background-color: #45a049;
+}
+
+.completeSubstepButton {
+  padding: 5px 10px;
+  font-size: 0.8em;
+  background-color: #2196F3;
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.completeSubstepButton:hover {
+  background-color: #1976D2;
+}
