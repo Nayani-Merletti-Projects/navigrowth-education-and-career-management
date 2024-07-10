@@ -1,3 +1,0 @@
-const strengthsList = [];
-
-export { strengthsList };

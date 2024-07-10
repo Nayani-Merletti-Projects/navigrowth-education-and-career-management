@@ -79,16 +79,6 @@ export async function setSkills(id, newSkills) {
   return await sql`UPDATE "user" SET skills = ${newSkills} WHERE id = ${id} RETURNING skills`;
 }
 
-// Add skill
-export async function addSkill(id, newSkill) {
-  return await sql`UPDATE "user" SET skills = array_append(skills, ${newSkill}) WHERE id = ${id} RETURNING skills`;
-}
-
-// Remove skill
-export async function removeSkill(id, skillToRemove) {
-  return await sql`UPDATE "user" SET skills = array_remove(skills, ${skillToRemove}) WHERE id = ${id} RETURNING skills`;
-}
-
 // Get path
 export async function getPath(id) {
   const result = await sql`SELECT path FROM "user" WHERE id = ${id}`;
@@ -189,4 +179,18 @@ export async function getUsersWithSimilarSkills(userId, limit = 10) {
     ORDER BY common_skills_count DESC
     LIMIT ${limit}
   `;
+}
+
+export async function getAllSkills(userId) {
+  const { rows } =
+    await sql`SELECT * FROM skills WHERE user_id = ${userId} ORDER BY id`;
+  return rows;
+}
+
+export async function addSkill(userId, name, description) {
+  await sql`INSERT INTO skills (user_id, name, description) VALUES (${userId}, ${name}, ${description})`;
+}
+
+export async function removeSkill(id, userId) {
+  await sql`DELETE FROM skills WHERE id = ${id} AND user_id = ${userId}`;
 }
