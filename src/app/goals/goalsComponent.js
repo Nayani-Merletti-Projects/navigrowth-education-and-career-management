@@ -138,8 +138,12 @@ export default function GoalsComponent() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
 
 
 
       
+=======
+}
+>>>>>>> 32352ba8705ec76ff6b65e07e68e971d8a642ccc

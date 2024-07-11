@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.4",
+<<<<<<< HEAD
+=======
+    "@neondatabase/serverless": "^0.9.4",
+>>>>>>> 32352ba8705ec76ff6b65e07e68e971d8a642ccc
     "heroicons": "^2.1.4",
     "next": "14.2.4",
     "react": "^18",

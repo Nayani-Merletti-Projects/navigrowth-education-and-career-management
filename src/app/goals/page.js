@@ -8,7 +8,10 @@ import "../Styles/mukta.css";
 
 export default function ChatPage() {
   return (
+<<<<<<< HEAD
   
+=======
+>>>>>>> 32352ba8705ec76ff6b65e07e68e971d8a642ccc
     <>
       <div>
         <header className="Homepage-header">
@@ -33,8 +36,12 @@ export default function ChatPage() {
         <div className="js-navbar"></div>
       </div>
       <NavBar />
+<<<<<<< HEAD
       
     </>
   
+=======
+    </>
+>>>>>>> 32352ba8705ec76ff6b65e07e68e971d8a642ccc
   );
 }
