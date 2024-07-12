@@ -1,114 +1,133 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { getAllSkills, addSkill, removeSkill } from "@/app/actions";
+import { getAllSkills, addSkill, removeSkill } from "../actions";
+import styles from "../Styles/Skills.module.css";
 
-export default function SkillsPage() {
+export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [newSkillName, setNewSkillName] = useState("");
   const [newSkillDescription, setNewSkillDescription] = useState("");
-  const router = useRouter();
-  const { user, logout } = useAuth();
+  const [error, setError] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const { user } = useAuth();
 
   const fetchSkills = useCallback(async () => {
     if (user) {
-      const fetchedSkills = await getAllSkills(user.id);
-      setSkills(fetchedSkills);
+      try {
+        console.log("Fetching skills for user:", user.id);
+        const fetchedSkills = await getAllSkills(user.id);
+        console.log("Fetched skills:", fetchedSkills);
+        setSkills(fetchedSkills);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+        setError("Failed to fetch skills. Please try again.");
+      }
+    } else {
+      console.log("No user found in AuthContext");
     }
   }, [user]);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    } else {
-      fetchSkills();
-    }
-  }, [user, router, fetchSkills]);
+    fetchSkills();
+  }, [fetchSkills]);
 
-  async function handleAddSkill(e) {
+  const handleAddSkill = async (e) => {
     e.preventDefault();
-    if (newSkillName && newSkillDescription && user) {
-      await addSkill(user.id, newSkillName, newSkillDescription);
-      setNewSkillName("");
-      setNewSkillDescription("");
-      setShowInput(false);
-      fetchSkills();
-    } else {
-      alert("Fill out both the boxes!");
+    console.log("Add skill button clicked");
+    if (!newSkillName || !newSkillDescription) {
+      alert("Please fill in both the skill name and description.");
+      return;
     }
-  }
-
-  async function handleRemoveSkill(id) {
     if (user) {
-      await removeSkill(id, user.id);
-      fetchSkills();
+      setIsAdding(true);
+      try {
+        console.log("Adding skill:", { userId: user.id, newSkillName, newSkillDescription });
+        await addSkill(user.id, newSkillName, newSkillDescription);
+        console.log("Skill added successfully");
+        setNewSkillName("");
+        setNewSkillDescription("");
+        setShowInput(false);
+        await fetchSkills();
+        setError(null);
+      } catch (error) {
+        console.error("Error adding skill:", error);
+        setError(`Failed to add skill: ${error.message}`);
+      } finally {
+        setIsAdding(false);
+      }
+    } else {
+      console.log("No user found in AuthContext");
+      setError("User not authenticated. Please log in.");
     }
-  }
-
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
   };
 
-  if (!user) {
-    return null;
-  }
+  const handleRemoveSkill = async (skillName) => {
+    if (user) {
+      try {
+        console.log("Removing skill:", skillName);
+        await removeSkill(user.id, skillName);
+        console.log("Skill removed successfully");
+        fetchSkills();
+        setError(null);
+      } catch (error) {
+        console.error("Error removing skill:", error);
+        setError("Failed to remove skill. Please try again.");
+      }
+    } else {
+      console.log("No user found in AuthContext");
+      setError("User not authenticated. Please log in.");
+    }
+  };
 
   return (
-    <div>
-      <h1>Skills for {user.username}</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <button
-        onClick={() => setShowInput(!showInput)}
-        className="js-add-skill-button"
+    <div className={styles.skillsContainer}>
+      {error && <p className={styles.error}>{error}</p>}
+      <button 
+        onClick={() => setShowInput(!showInput)} 
+        className={styles.addButton}
+        disabled={isAdding}
       >
         {showInput ? "Cancel" : "Add Skill"}
       </button>
-
+      
       {showInput && (
-        <form
-          onSubmit={handleAddSkill}
-          className="js-skill-input-section s_s-input-section"
-        >
-          <div className="inputs">
-            <input
-              className="skill-name-input js-skill-name-input"
-              value={newSkillName}
-              onChange={(e) => setNewSkillName(e.target.value)}
-              placeholder="Skill Name"
-              required
-            />
-            <textarea
-              className="description-box js-skill-description-box"
-              value={newSkillDescription}
-              onChange={(e) => setNewSkillDescription(e.target.value)}
-              placeholder="Skill Description"
-              required
-            />
-          </div>
-          <div className="done-button-container">
-            <button type="submit" className="done-button js-create-button">
-              Create
-            </button>
-          </div>
+        <form onSubmit={handleAddSkill} className={styles.inputForm}>
+          <input
+            type="text"
+            value={newSkillName}
+            onChange={(e) => setNewSkillName(e.target.value)}
+            placeholder="Skill Name"
+            className={styles.input}
+            disabled={isAdding}
+          />
+          <textarea
+            value={newSkillDescription}
+            onChange={(e) => setNewSkillDescription(e.target.value)}
+            placeholder="Skill Description"
+            className={styles.textarea}
+            disabled={isAdding}
+          />
+          <button type="submit" className={styles.submitButton} disabled={isAdding}>
+            {isAdding ? "Adding..." : "Add"}
+          </button>
         </form>
       )}
-
-      <div className="js-skill-box">
-        {skills.map((skill) => (
-          <div key={skill.id} className="skill-box">
-            <p className="skill-name">{skill.name}</p>
-            <div className="skill-description">{skill.description}</div>
-            <button
-              onClick={() => handleRemoveSkill(skill.id)}
-              className="remove-skill-button js-remove-skill-button"
-              data-id={skill.id}
+      
+      <div className={styles.skillsList}>
+        {skills.map((skill, index) => (
+          <div key={index} className={styles.skillItem}>
+            <button 
+              onClick={() => handleRemoveSkill(skill.name)} 
+              className={styles.removeButton}
             >
               X
             </button>
+            <h3 className={styles.skillName}>{skill.name}</h3>
+            <p className={styles.skillDescription}>{skill.description}</p>
           </div>
         ))}
       </div>

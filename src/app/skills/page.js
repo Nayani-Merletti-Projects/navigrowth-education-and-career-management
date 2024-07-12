@@ -1,18 +1,18 @@
 import Link from "next/link";
 import React from "react";
 import { NavBar } from "../../../Components/NavBar";
-import SkillsComponent from "./skills.js"; 
+import SkillsComponent from "./skills.js";  
 
 import "../Styles/Home_Page.css";
 import "../Styles/mukta.css";
 
-export default function skillsPage() {  
+export default function SkillsPage() { 
   return (
     <>
       <div>
         <header className="Homepage-header">
           <div className="Website-Title">
-            <span className="title-text">NaviGrowth Education</span>
+            <span className="title-text">Skills</span>
           </div>
 
           <div className="info-section">
