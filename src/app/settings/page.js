@@ -1,12 +1,12 @@
 import Link from "next/link";
 import React from "react";
 import { NavBar } from "../../../Components/NavBar";
-import SkillsComponent from "./skills.js"; 
+import SettingsComponent from "./settings.js";  // Changed this line
 
 import "../Styles/Home_Page.css";
 import "../Styles/mukta.css";
 
-export default function skillsPage() {  
+export default function SettingsPage() {  // Changed function name to PascalCase
   return (
     <>
       <div>
@@ -25,7 +25,7 @@ export default function skillsPage() {
         </header>
 
         <main className="body-text">
-          <SkillsComponent /> 
+          <SettingsComponent /> 
         </main>
 
         <div className="js-navbar"></div>

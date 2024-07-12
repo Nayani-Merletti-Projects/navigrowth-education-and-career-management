@@ -24,10 +24,12 @@
 .userMessage {
   background-color: #e6f2ff;
   text-align: right;
+  color: rgba(0, 0, 0, 0.768);
 }
 
 .aiMessage {
   background-color: #f0f0f0;
+  color: rgba(0, 0, 0, 0.751);
 }
 
 .inputForm {

@@ -12,7 +12,7 @@ import {
 
 const navItems = [
   { href: "/", Icon: HomeIcon, text: "Home" },
-  { href: "/skills", Icon: AcademicCapIcon, text: "Skills/Strengths" },
+  { href: "/skills", Icon: AcademicCapIcon, text: "Skills" },
   { href: "/goals", Icon: FlagIcon, text: "Goals" },
   { href: "paths", Icon: MapIcon, text: "Paths/Opportunities" },
   { href: "/chat", Icon: ChatBubbleLeftRightIcon, text: "Chat" },
