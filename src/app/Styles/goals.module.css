@@ -127,3 +127,9 @@
 .completeSubstepButton:hover {
   background-color: #1976D2;
 }
+
+
+.submitGoalButton:disabled {
+  background-color: #bbdefb;
+  cursor: not-allowed;
+}

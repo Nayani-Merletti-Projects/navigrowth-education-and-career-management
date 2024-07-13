@@ -12,8 +12,11 @@
     "@heroicons/react": "^2.1.4",
     "@neondatabase/serverless": "^0.9.4",
     "@vercel/postgres": "^0.9.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "heroicons": "^2.1.4",
     "next": "^14.2.5",
+    "node-loader": "^2.0.0",
     "react": "^18",
     "react-dom": "^18"
   },

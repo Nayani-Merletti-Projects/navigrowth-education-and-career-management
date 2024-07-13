@@ -2,17 +2,17 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 import styles from '../Styles/settings.module.css';
 
 export default function Settings() {
   const [darkMode, setDarkMode] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const router = useRouter();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    // Implement logout logic here
-    // For now, we'll just redirect to the login page
-    router.push('/login');
+    logout();
   };
 
   return (

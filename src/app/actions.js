@@ -1,5 +1,6 @@
 "use server";
 import { neon } from "@neondatabase/serverless";
+import bcrypt from 'bcrypt';
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -17,11 +18,15 @@ export async function getUserByUsername(username) {
 
 export async function createUser(username, email, password) {
   const combinedUsername = `${username}|${email}`;
-  return await sql`
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('Creating user with hashed password:', hashedPassword);
+  const result = await sql`
     INSERT INTO id (username, password, skills, goals)
-    VALUES (${combinedUsername}, ${password}, '[]'::json, '[]'::json)
+    VALUES (${combinedUsername}, ${hashedPassword}, '[]'::json, '[]'::json)
     RETURNING *
   `;
+  console.log('User created:', result[0]);
+  return result[0];
 }
 
 export async function updateUser(userId, username, email, password, path) {
@@ -50,18 +55,41 @@ export async function getEmail(userId) {
   return result[0]?.username.split('|')[1];
 }
 
-export async function setUsername(userId, newUsername, newEmail) {
-  const combinedUsername = `${newUsername}|${newEmail}`;
-  return await sql`UPDATE id SET username = ${combinedUsername} WHERE id = ${userId} RETURNING username`;
+export async function updateUsernameAndEmail(userId, newUsername, newEmail) {
+  // First, get the current username and email
+  const currentUser = await sql`SELECT username FROM id WHERE id = ${userId}`;
+  const [currentUsername, currentEmail] = currentUser[0].username.split('|');
+
+  // Use the new email if provided, otherwise use the current email
+  const emailToUse = newEmail || currentEmail;
+
+  const combinedUsername = `${newUsername}|${emailToUse}`;
+  
+  console.log(`Updating user ${userId} to: ${combinedUsername}`);
+
+  const result = await sql`
+    UPDATE id 
+    SET username = ${combinedUsername} 
+    WHERE id = ${userId} 
+    RETURNING username
+  `;
+
+  console.log('Update result:', result);
+
+  return result[0]?.username;
 }
 
+
 export async function getPassword(userId) {
+  console.log('Getting password for user:', userId);
   const result = await sql`SELECT password FROM id WHERE id = ${userId}`;
+  console.log('Database result:', result);
   return result[0]?.password;
 }
 
-export async function setPassword(userId, newPassword) {
-  return await sql`UPDATE id SET password = ${newPassword} WHERE id = ${userId} RETURNING id`;
+export async function updatePassword(userId, newPassword) {
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  return await sql`UPDATE id SET password = ${hashedPassword} WHERE id = ${userId} RETURNING id`;
 }
 
 export async function getAllSkills(userId) {
@@ -117,13 +145,68 @@ export async function setPath(userId, newPath) {
   return await sql`UPDATE id SET path = ${newPath} WHERE id = ${userId} RETURNING path`;
 }
 
+
+export async function updateGoal(userId, goalData) {
+  console.log("Updating goal:", { userId, goalData });
+  try {
+    // First, get the current goals
+    const currentGoals = await sql`
+      SELECT goals FROM id WHERE id = ${userId}
+    `;
+
+    let updatedGoals;
+    if (!currentGoals[0]?.goals || currentGoals[0].goals.length === 0) {
+      // If there are no goals, create a new array with the new goal
+      updatedGoals = [goalData];
+    } else {
+      // If there are existing goals, update or add the new goal
+      const existingGoals = currentGoals[0].goals;
+      const goalIndex = existingGoals.findIndex(g => g.title === goalData.title);
+      if (goalIndex !== -1) {
+        // Update existing goal
+        existingGoals[goalIndex] = goalData;
+        updatedGoals = existingGoals;
+      } else {
+        // Add new goal
+        updatedGoals = [...existingGoals, goalData];
+      }
+    }
+
+    // Update the goals in the database
+    const result = await sql`
+      UPDATE id
+      SET goals = ${JSON.stringify(updatedGoals)}
+      WHERE id = ${userId}
+      RETURNING goals
+    `;
+
+    console.log("Goal updated, new goals array:", result[0]?.goals);
+    return result[0]?.goals;
+  } catch (error) {
+    console.error("Error in updateGoal:", error);
+    throw error;
+  }
+}
+
 export async function getGoals(userId) {
   const result = await sql`SELECT goals FROM id WHERE id = ${userId}`;
+  console.log("Current goals in database:", result[0]?.goals);
   return result[0]?.goals || [];
 }
 
-export async function setGoals(userId, newGoals) {
-  return await sql`UPDATE id SET goals = ${JSON.stringify(newGoals)}::json WHERE id = ${userId} RETURNING goals`;
+export async function removeGoal(userId, goalTitle) {
+  await sql`
+    UPDATE id 
+    SET goals = (
+      SELECT COALESCE(json_agg(el), '[]'::json)
+      FROM (
+        SELECT el
+        FROM json_array_elements(COALESCE(goals, '[]'::json)) el
+        WHERE (el->>'title') != ${goalTitle}
+      ) sub
+    )
+    WHERE id = ${userId}
+  `;
 }
 
 export async function getUsersBySkill(skill) {

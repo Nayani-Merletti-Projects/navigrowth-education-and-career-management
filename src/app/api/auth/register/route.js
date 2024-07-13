@@ -1,5 +1,6 @@
 import { createClient } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request) {
   const client = createClient({
@@ -8,6 +9,7 @@ export async function POST(request) {
   
   try {
     await client.connect();
+    console.log("Connected to database");
 
     // Check if the table exists and create it if it doesn't
     await client.query(`
@@ -20,10 +22,11 @@ export async function POST(request) {
         goals JSON
       )
     `);
+    console.log("Table checked/created");
 
     const { username, email, password } = await request.json();
     const combinedUsername = `${username}|${email}`;
-    console.log("Received registration data:", { username, email }); // Don't log passwords
+    console.log("Received registration data:", { username, email });
 
     // Check if the user already exists
     const existingUser = await client.query(
@@ -41,11 +44,15 @@ export async function POST(request) {
     // Get the next available id
     const maxIdResult = await client.query('SELECT COALESCE(MAX(id), 0) + 1 as next_id FROM id');
     const nextId = maxIdResult.rows[0].next_id;
+    console.log("Next ID:", nextId);
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert new user
     const result = await client.query(
       'INSERT INTO id (id, username, password, skills, path, goals) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
-      [nextId, combinedUsername, password, '[]', null, '[]']
+      [nextId, combinedUsername, hashedPassword, '[]', null, '[]']
     );
 
     console.log("Database insertion result:", result);
@@ -62,5 +69,6 @@ export async function POST(request) {
     );
   } finally {
     await client.end();
+    console.log("Database connection closed");
   }
 }

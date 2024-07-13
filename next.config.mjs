@@ -1,9 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false, // Keep this false if you're having issues, but consider changing to true for production
+  reactStrictMode: false,
   basePath: "/navigrowth-education-and-career-management",
   images: {
     unoptimized: true,
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        fs: false,
+        path: false,
+        os: false,
+      };
+    }
+
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'node-loader',
+    });
+
+    return config;
   },
 };
 
