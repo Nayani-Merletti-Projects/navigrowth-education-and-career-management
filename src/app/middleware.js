@@ -1,3 +1,4 @@
+// src/middleware.js
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
@@ -6,6 +7,7 @@ export function middleware(request) {
                      request.nextUrl.pathname.startsWith('/navigrowth-education-and-career-management/register');
 
   if (!user && !isAuthPage) {
+    // Redirect to the login page
     return NextResponse.redirect(new URL('/navigrowth-education-and-career-management/login', request.url));
   }
 

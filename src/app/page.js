@@ -1,12 +1,12 @@
+// src/app/page.js (Home Page)
 "use client";
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { NavBar } from "../../Components/NavBar";
 import { useAuth } from "./context/AuthContext";
-import { getGoals, updateGoal, removeGoal } from './actions'; // Adjust the path as needed
-import styles from "./Styles/Home_Page.css";
-import "./Styles/mukta.css";
+import { getGoals, updateGoal, removeGoal } from './actions';
+import "./styles/Home_Page.css";
 
 export default function Home() {
   const { user } = useAuth();
@@ -66,66 +66,68 @@ export default function Home() {
   };
 
   return (
-    <>
-      <div>
-        <header className="Homepage-header">
-          <div className="Website-Title">
-            <span className="title-text">NaviGrowth Education</span>
-          </div>
-
-          <div className="info-section">
-            <Link href="/about">About Us</Link>
-          </div>
-
-          <div className="info-section">
-            <Link href="/settings">Settings</Link>
-          </div>
-        </header>
-
-        <main className="body-text">
-          <p className="home-msg">Hey There {username || 'Guest'}!</p>
-          <span className="homepage-goal-header">GOALS</span>
-          <div className="homepage-goal-tracker">
-            {goals.length > 0 ? (
-              goals.map((goal, goalIndex) => (
-                <div key={`goal-${goalIndex}-${goal.title}`} className="goal-item">
-                  <h3 className="goal-title">{goal.title}</h3>
-                  <p>Due: {formatDate(goal.date)}</p>
-                  {goal.substeps && goal.substeps.length > 0 && (
-                    <>
-                      <div className="substeps-list">
-                        {goal.substeps.map((substep, substepIndex) => (
-                          <div key={`substep-${goalIndex}-${substepIndex}`} className={`substep ${substep.completed ? 'completed' : ''}`}>
-                            <span>{substep.text}</span>
-                            <button onClick={() => handleCompleteSubstep(goalIndex, substepIndex)} className="complete-substep-button">
-                              {substep.completed ? 'Undo' : 'Complete'}
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${calculateProgress(goal.substeps)}%` }}></div>
-                      </div>
-                      {calculateProgress(goal.substeps) === 100 && <p className="done-message">Done!</p>}
-                    </>
-                  )}
-                  <button onClick={() => handleFinishGoal(goal.title)} className="finish-goal-button">Finished</button>
-                </div>
-              ))
-            ) : (
-              <>
-                <p className="no-goals-msg">You are all done!</p>
-                <Link href="/goals" className="no-goals-link">
-                  Make some new ones!
-                </Link>
-              </>
-            )}
-          </div>
-        </main>
-
-        <div className="js-navbar"></div>
-      </div>
+    <div className="main-container">
       <NavBar />
-    </>
+      <div className="content-area">
+        <header className="header">
+          <h1 className="title">NaviGrowth Education</h1>
+          <p className="welcome-message">Welcome, {username || 'Guest'}!</p>
+        </header>
+        <main>
+          <section className="goals-section">
+            <h2 className="section-title">Your Goals</h2>
+            {goals.length > 0 ? (
+              <div className="goals-list">
+                {goals.map((goal, goalIndex) => (
+                  <div key={`goal-${goalIndex}-${goal.title}`} className="goal-card">
+                    <h3 className="goal-title">{goal.title}</h3>
+                    <p className="goal-date">Due: {formatDate(goal.date)}</p>
+                    {goal.substeps && goal.substeps.length > 0 && (
+                      <>
+                        <ul className="substeps-list">
+                          {goal.substeps.map((substep, substepIndex) => (
+                            <li key={`substep-${goalIndex}-${substepIndex}`} className="substep-item">
+                              <span className="substep-text">{substep.text}</span>
+                              <button 
+                                onClick={() => handleCompleteSubstep(goalIndex, substepIndex)} 
+                                className="substep-button"
+                              >
+                                {substep.completed ? 'Undo' : 'Complete'}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="progress-bar">
+                          <div 
+                            className="progress-fill" 
+                            style={{ width: `${calculateProgress(goal.substeps)}%` }}
+                          ></div>
+                        </div>
+                        {calculateProgress(goal.substeps) === 100 && (
+                          <p className="completion-message">Goal Completed!</p>
+                        )}
+                      </>
+                    )}
+                    <button 
+                      onClick={() => handleFinishGoal(goal.title)} 
+                      className="finish-button"
+                    >
+                      Finish Goal
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-goals">
+                <p>You have no active goals.</p>
+                <Link href="/goals" className="create-goal-link">
+                  Create New Goal
+                </Link>
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+    </div>
   );
 }
