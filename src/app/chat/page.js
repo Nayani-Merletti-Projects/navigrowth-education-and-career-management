@@ -70,7 +70,7 @@ export default function ChatPage() {
       } catch (error) {
         console.error("Error getting AI response:", error);
         setError(
-          "I'm having trouble connecting to my knowledge base. Please try again or check back later."
+          `I'm having trouble connecting to my knowledge base. The error message is: ${error.message}. Please try again or check back later.`
         );
       } finally {
         setIsLoading(false);
