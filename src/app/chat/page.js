@@ -1,15 +1,39 @@
 // src/app/chat/page.js
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { NavBar } from "../../../Components/NavBar";
-import "../global-colors.css";
-import styles from "../Styles/Chat.module.css";
+import { getTextResponse } from '../api/ai/service';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { NavBar } from '../../../Components/NavBar';
+import { getGoals, getAllSkills } from '../actions';
+import styles from '../Styles/Chat.module.css';
 
 export default function ChatPage() {
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
+
+  const fetchUserData = async () => {
+    try {
+      const goals = await getGoals(user.id);
+      const skills = await getAllSkills(user.id);
+      setUserData({ goals, skills });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setError('Failed to fetch user data. Some features may be limited.');
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -17,18 +41,39 @@ export default function ChatPage() {
 
   useEffect(scrollToBottom, [messages]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (input.trim()) {
-      setMessages([...messages, { text: input, user: true }]);
-      // Here you would typically call an API to get the AI response
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { text: `You said: ${input}`, user: false },
-        ]);
-      }, 1000);
-      setInput("");
+    if (input.trim() && !isLoading) {
+      setIsLoading(true);
+      setError(null);
+      const userMessage = { text: input, user: true };
+      setMessages(prev => [...prev, userMessage]);
+      setInput('');
+
+      try {
+        const context = `You are a smart, real, and helpful career advisor. The user's information is as follows:
+          Goals: ${JSON.stringify(userData?.goals || [])}
+          Skills: ${JSON.stringify(userData?.skills || [])}
+          Chat history: ${JSON.stringify(messages)}
+          Please provide tailored advice based on this information and the chat history.`;
+
+        const aiResponse = await getTextResponse(
+          { userMessage: input, context },
+          "You are a career advisor. Provide helpful, encouraging, and practical advice based on the user's goals, skills, and previous conversation. Be concise but thorough in your responses."
+        );
+
+        if (typeof aiResponse !== 'string' || aiResponse.trim() === '') {
+          throw new Error('Invalid response from AI');
+        }
+
+        const aiMessage = { text: aiResponse, user: false };
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (error) {
+        console.error('Error getting AI response:', error);
+        setError("I'm having trouble connecting to my knowledge base. Please try again or check back later.");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -38,19 +83,24 @@ export default function ChatPage() {
       <div className={styles.contentArea}>
         <div className={styles.chatContainer}>
           <header className={styles.chatHeader}>
-            <h1 className={styles.chatTitle}>NaviGrowth AI Chat</h1>
+            <h1 className={styles.chatTitle}>Career Advisor Chat</h1>
           </header>
           <div className={styles.chatWindow}>
             {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`${styles.message} ${
-                  message.user ? styles.userMessage : styles.aiMessage
-                }`}
-              >
+              <div key={index} className={`${styles.message} ${message.user ? styles.userMessage : styles.aiMessage}`}>
                 {message.text}
               </div>
             ))}
+            {isLoading && (
+              <div className={`${styles.message} ${styles.aiMessage} ${styles.loadingMessage}`}>
+                Thinking...
+              </div>
+            )}
+            {error && (
+              <div className={`${styles.message} ${styles.errorMessage}`}>
+                {error}
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
           <form onSubmit={handleSubmit} className={styles.inputForm}>
@@ -58,10 +108,11 @@ export default function ChatPage() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
+              placeholder="Ask about your career..."
               className={styles.input}
+              disabled={isLoading}
             />
-            <button type="submit" className={styles.sendButton}>
+            <button type="submit" className={styles.sendButton} disabled={isLoading}>
               Send
             </button>
           </form>

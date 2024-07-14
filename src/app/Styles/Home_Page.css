@@ -9,9 +9,6 @@
   --button-bg: #268bd2;
   --button-text: #fff;
   --hover: #2aa198;
-}
-/* shared-styles.css */
-:root {
   --base03: #002b36;
   --base02: #073642;
   --base01: #586e75;
@@ -299,4 +296,19 @@ body {
   .title {
     font-size: 2rem;
   }
+}
+
+.solarized-light-button {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.solarized-light-button:hover {
+  background-color: var(--hover);
 }

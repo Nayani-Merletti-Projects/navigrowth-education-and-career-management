@@ -1,12 +1,12 @@
 // ChatComponent.js
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import '../Styles/chat.css';
+import { useState, useRef, useEffect } from "react";
+import "../Styles/chat.css";
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function ChatComponent() {
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = 'auto';
+      textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   };
@@ -28,22 +28,28 @@ export default function ChatComponent() {
       // Here you would typically call an API to get the AI response
       // For this example, we'll just echo the user's message
       setTimeout(() => {
-        setMessages(prev => [...prev, { text: `You said: ${input}`, user: false }]);
+        setMessages((prev) => [
+          ...prev,
+          { text: `You said: ${input}`, user: false },
+        ]);
       }, 1000);
-      setInput('');
+      setInput("");
     }
   };
 
   const handleClear = () => {
     setMessages([]);
-    setInput('');
+    setInput("");
   };
 
   return (
     <div className="container">
       <div className="chatWindow">
         {messages.map((message, index) => (
-          <div key={index} className={`message ${message.user ? 'userMessage' : 'aiMessage'}`}>
+          <div
+            key={index}
+            className={`message ${message.user ? "userMessage" : "aiMessage"}`}
+          >
             {message.text}
           </div>
         ))}
@@ -58,8 +64,12 @@ export default function ChatComponent() {
           rows="1"
         />
         <div className="buttonGroup">
-          <button type="submit" className="sendButton">Send</button>
-          <button type="button" onClick={handleClear} className="clearButton">Clear</button>
+          <button type="submit" className="sendButton">
+            Send
+          </button>
+          <button type="button" onClick={handleClear} className="clearButton">
+            Clear
+          </button>
         </div>
       </form>
     </div>
