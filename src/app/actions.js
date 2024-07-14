@@ -199,7 +199,6 @@ export async function updateGoal(userId, goalData) {
         existingGoals[goalIndex] = goalData;
         updatedGoals = existingGoals;
       } else {
-        // Add new goal
         updatedGoals = [...existingGoals, goalData];
       }
     }
