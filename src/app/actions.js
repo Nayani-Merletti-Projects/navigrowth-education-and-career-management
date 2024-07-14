@@ -145,6 +145,38 @@ export async function setPath(userId, newPath) {
   return await sql`UPDATE id SET path = ${newPath} WHERE id = ${userId} RETURNING path`;
 }
 
+export async function addPath(userId, newPath) {
+  try {
+    const result = await sql`
+      UPDATE id
+      SET path = ${newPath}
+      WHERE id = ${userId}
+      RETURNING path
+    `;
+    console.log("Path added, new path:", result[0]?.path);
+    return result[0]?.path;
+  } catch (error) {
+    console.error("Error in addPath:", error);
+    throw error;
+  }
+}
+
+export async function removePath(userId, path) {
+  try {
+    const result = await sql`
+      UPDATE id
+      SET path = NULL
+      WHERE id = ${userId} AND path = ${path}
+      RETURNING path
+    `;
+    console.log("Path removed, removed path:", result[0]?.path);
+    return result[0]?.path;
+  } catch (error) {
+    console.error("Error in removePath:", error);
+    throw error;
+  }
+}
+
 
 export async function updateGoal(userId, goalData) {
   console.log("Updating goal:", { userId, goalData });
