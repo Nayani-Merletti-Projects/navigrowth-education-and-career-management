@@ -8,6 +8,7 @@ import {
   ChatBubbleLeftRightIcon,
   UserCircleIcon,
   Bars3Icon,
+  WrenchIcon
 } from "@heroicons/react/24/outline";
 
 const navItems = [
@@ -16,7 +17,7 @@ const navItems = [
   { href: "/goals", Icon: FlagIcon, text: "Goals" },
   { href: "paths", Icon: MapIcon, text: "Paths/Opportunities" },
   { href: "/chat", Icon: ChatBubbleLeftRightIcon, text: "Chat" },
-  { href: "/account", Icon: UserCircleIcon, text: "Account" },
+  { href: "/settings", Icon: WrenchIcon, text: "Settings" }
 ];
 
 export function NavBar() {

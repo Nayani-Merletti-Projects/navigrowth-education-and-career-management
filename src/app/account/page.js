@@ -19,40 +19,52 @@ export default function AccountPage() {
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
 
   useEffect(() => {
+    console.log('Current user:', user);
     if (user) {
       fetchUserInfo();
     }
   }, [user]);
 
   const fetchUserInfo = async () => {
+    console.log('Fetching user info for user ID:', user.id);
     const fetchedUsername = await getUsername(user.id);
     const fetchedEmail = await getEmail(user.id);
+    console.log('Fetched user info:', { fetchedUsername, fetchedEmail });
     setUsername(fetchedUsername);
     setEmail(fetchedEmail);
   };
 
   const handleChangeClick = (type) => {
+    console.log('Change clicked:', type);
     setActiveChange(type);
     resetForm();
+    console.log('Active change set to:', type);
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    console.log('Password submit initiated');
     setIsChanging(true);
     try {
+      console.log('Sending password verification request for user:', user.id);
       const response = await fetch('/api/auth/verify-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, password }),
       });
+      console.log('Password verification response status:', response.status);
       const data = await response.json();
+      console.log('Password verification response data:', data);
       if (data.isValid) {
+        console.log('Password verified successfully');
         setIsPasswordVerified(true);
         setPassword('');
       } else {
+        console.log('Password verification failed');
         setMessage({ type: 'error', content: 'Incorrect password' });
       }
     } catch (error) {
+      console.error('Error verifying password:', error);
       setMessage({ type: 'error', content: 'Error verifying password' });
     } finally {
       setIsChanging(false);
@@ -61,6 +73,7 @@ export default function AccountPage() {
 
   const handleChange = async (e) => {
     e.preventDefault();
+    console.log('Change initiated for:', activeChange);
     setIsChanging(true);
     setMessage({ type: '', content: '' });
   
@@ -69,33 +82,25 @@ export default function AccountPage() {
       switch (activeChange) {
         case 'username':
           result = await updateUsernameAndEmail(user.id, newValue, email);
-          if (result) {
-            setUsername(newValue);
-            setMessage({ type: 'success', content: 'Username updated successfully' });
-          }
           break;
         case 'email':
           result = await updateUsernameAndEmail(user.id, username, newValue);
-          if (result) {
-            setEmail(newValue);
-            setMessage({ type: 'success', content: 'Email updated successfully' });
-          }
           break;
         case 'password':
           result = await updatePassword(user.id, newValue);
-          if (result) {
-            setMessage({ type: 'success', content: 'Password updated successfully' });
-          }
           break;
       }
+      console.log('Update result:', result);
       if (result) {
         updateUser({ ...user, username: result });
         resetForm();
+        setMessage({ type: 'success', content: `${activeChange} updated successfully` });
       } else {
         setMessage({ type: 'error', content: 'Failed to update. Please try again.' });
       }
     } catch (error) {
-      setMessage({ type: 'error', content: 'An error occurred. Please try again.' });
+      console.error('Error updating:', error);
+      setMessage({ type: 'error', content: `An error occurred: ${error.message}` });
     } finally {
       setIsChanging(false);
     }
@@ -128,7 +133,10 @@ export default function AccountPage() {
           )}
 
           {activeChange && !isPasswordVerified && (
-            <form onSubmit={handlePasswordSubmit} className={styles.form}>
+            <form onSubmit={(e) => {
+              console.log('Password verification form submitted');
+              handlePasswordSubmit(e);
+            }} className={styles.form}>
               <input
                 type="password"
                 value={password}

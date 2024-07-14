@@ -1,8 +1,7 @@
-// ChatComponent.js
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import '../Styles/chat.css';
+import styles from '../Styles/Chat.module.css';
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState([]);
@@ -40,26 +39,26 @@ export default function ChatComponent() {
   };
 
   return (
-    <div className="container">
-      <div className="chatWindow">
+    <div className={styles.container}>
+      <div className={styles.chatWindow}>
         {messages.map((message, index) => (
-          <div key={index} className={`message ${message.user ? 'userMessage' : 'aiMessage'}`}>
+          <div key={index} className={`${styles.message} ${message.user ? styles.userMessage : styles.aiMessage}`}>
             {message.text}
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="inputForm">
+      <form onSubmit={handleSubmit} className={styles.inputForm}>
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="input"
+          className={styles.input}
           rows="1"
         />
-        <div className="buttonGroup">
-          <button type="submit" className="sendButton">Send</button>
-          <button type="button" onClick={handleClear} className="clearButton">Clear</button>
+        <div className={styles.buttonGroup}>
+          <button type="submit" className={styles.sendButton}>Send</button>
+          <button type="button" onClick={handleClear} className={styles.clearButton}>Clear</button>
         </div>
       </form>
     </div>

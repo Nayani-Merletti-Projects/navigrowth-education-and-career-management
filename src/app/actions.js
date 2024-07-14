@@ -78,7 +78,7 @@ export async function updateUsernameAndEmail(userId, newUsername, newEmail) {
 
   return result[0]?.username;
 }
-
+ 
 
 export async function getPassword(userId) {
   console.log('Getting password for user:', userId);

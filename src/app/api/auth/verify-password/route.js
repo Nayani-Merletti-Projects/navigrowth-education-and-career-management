@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { getPassword } from '../../../actions';
 
 export async function POST(request) {
+  console.log('Verify password API route called');
   try {
     const { userId, password } = await request.json();
     console.log('Verifying password for user:', userId);
@@ -15,13 +16,12 @@ export async function POST(request) {
       return NextResponse.json({ isValid: false, error: 'No password found for user' });
     }
 
-    // Compare the provided password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, storedHashedPassword);
     console.log('Password valid:', isPasswordValid);
 
     return NextResponse.json({ isValid: isPasswordValid });
   } catch (error) {
-    console.error('Error verifying password:', error);
+    console.error('Error in verify password API route:', error);
     return NextResponse.json({ error: 'Error verifying password', details: error.message }, { status: 500 });
   }
 }

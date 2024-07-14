@@ -1,35 +1,55 @@
-// src/app/chat/page.js
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { NavBar } from "../../../Components/NavBar";
 import "../global-colors.css";
 import styles from "../Styles/Chat.module.css";
+import { getChatbotResponse } from '../utils/advancedChatbotLogic';
 
-export default function ChatPage() {
+export default function ChatComponent() {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const messagesEndRef = useRef(null);
+  const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const textareaRef = useRef(null);
+  const chatWindowRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input]);
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+    }
   };
 
-  useEffect(scrollToBottom, [messages]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (input.trim()) {
-      setMessages([...messages, { text: input, user: true }]);
-      // Here you would typically call an API to get the AI response
+      const userMessage = { text: input, user: true };
+      setMessages(prev => [...prev, userMessage]);
+      setInput('');
+      setIsTyping(true);
+
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { text: `You said: ${input}`, user: false },
-        ]);
-      }, 1000);
-      setInput("");
+        const botResponse = { text: getChatbotResponse(input), user: false };
+        setMessages(prev => [...prev, botResponse]);
+        setIsTyping(false);
+      }, 1000 + Math.random() * 1000);
     }
+  };
+
+  const handleClear = () => {
+    setMessages([]);
+    setInput('');
   };
 
   return (
@@ -37,33 +57,30 @@ export default function ChatPage() {
       <NavBar />
       <div className={styles.contentArea}>
         <div className={styles.chatContainer}>
-          <header className={styles.chatHeader}>
-            <h1 className={styles.chatTitle}>NaviGrowth AI Chat</h1>
-          </header>
-          <div className={styles.chatWindow}>
+          <div className={styles.chatHeader}>
+            <h2 className={styles.chatTitle}>AI Counselor Chat</h2>
+          </div>
+          <div className={styles.chatWindow} ref={chatWindowRef}>
             {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`${styles.message} ${
-                  message.user ? styles.userMessage : styles.aiMessage
-                }`}
-              >
+              <div key={index} className={`${styles.message} ${message.user ? styles.userMessage : styles.aiMessage}`}>
                 {message.text}
               </div>
             ))}
-            <div ref={messagesEndRef} />
+            {isTyping && <div className={styles.typingIndicator}>AI is typing...</div>}
           </div>
           <form onSubmit={handleSubmit} className={styles.inputForm}>
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
               className={styles.input}
+              rows="1"
             />
-            <button type="submit" className={styles.sendButton}>
-              Send
-            </button>
+            <div className={styles.buttonGroup}>
+              <button type="submit" className={styles.sendButton}>Send</button>
+              <button type="button" onClick={handleClear} className={styles.clearButton}>Clear</button>
+            </div>
           </form>
         </div>
       </div>

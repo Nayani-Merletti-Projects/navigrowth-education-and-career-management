@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { NavBar } from "../../Components/NavBar";
 import { useAuth } from "./context/AuthContext";
 import { getGoals, updateGoal, removeGoal } from './actions';
-import "./styles/Home_Page.css";
+import "./Styles/Home_Page.css";
 
 export default function Home() {
   const { user } = useAuth();
