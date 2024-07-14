@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -20,7 +20,7 @@ export default function AccountPage() {
   useEffect(() => {
     if (user && user.username) {
       const [name, emailPart] = user.username.split('|');
-      setUsernameState(name);
+      setUsernameState(name); 
       setEmailState(emailPart);
     }
   }, [user]);
@@ -39,7 +39,7 @@ export default function AccountPage() {
     setError('');
     setIsChanging(true);
     try {
-      const response = await fetch('/navigrowth-education-and-career-management/api/auth/verify-password', {
+      const response = await fetch('/api/auth/verify-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -176,4 +176,4 @@ export default function AccountPage() {
       {successMessage && <p className={styles.success}>{successMessage}</p>}
     </div>
   );
-}
+}*/

@@ -2,12 +2,12 @@
 .pageContainer {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 .contentArea {
   flex-grow: 1;
   padding: 2rem;
-  margin-left: 240px; /* Adjust based on your navbar width */
   background-color: #fdf6e3; /* var(--base3) */
 }
 

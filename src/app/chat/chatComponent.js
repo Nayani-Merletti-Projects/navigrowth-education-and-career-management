@@ -43,8 +43,8 @@ export default function ChatComponent() {
   };
 
   return (
-    <div className="container">
-      <div className="chatWindow">
+    <div className={styles.container}>
+      <div className={styles.chatWindow}>
         {messages.map((message, index) => (
           <div
             key={index}
@@ -54,13 +54,13 @@ export default function ChatComponent() {
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="inputForm">
+      <form onSubmit={handleSubmit} className={styles.inputForm}>
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="input"
+          className={styles.input}
           rows="1"
         />
         <div className="buttonGroup">

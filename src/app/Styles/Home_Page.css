@@ -136,7 +136,8 @@ body {
 .content-area {
   flex-grow: 1;
   padding: 2rem;
-  margin-left: 240px;
+  margin: 0 100px;
+
 }
 
 .header {

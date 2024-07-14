@@ -1,4 +1,3 @@
-// src/app/chat/page.js
 "use client";
 
 import { getTextResponse } from '../api/ai/service';
@@ -41,6 +40,7 @@ export default function ChatPage() {
 
   useEffect(scrollToBottom, [messages]);
 
+  const handleSubmit = async (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (input.trim() && !isLoading) {
@@ -104,8 +104,8 @@ export default function ChatPage() {
             <div ref={messagesEndRef} />
           </div>
           <form onSubmit={handleSubmit} className={styles.inputForm}>
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about your career..."
