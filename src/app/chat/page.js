@@ -9,7 +9,9 @@ import styles from "../Styles/Chat.module.css";
 
 export default function ChatPage() {
   const { user } = useAuth();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { text: "Welcome to the Career Advisor Chat! How can I assist you today?", user: false }
+  ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);

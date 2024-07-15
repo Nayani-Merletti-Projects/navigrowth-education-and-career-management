@@ -7,11 +7,11 @@
 .contentArea {
   flex-grow: 1;
   padding: 2rem;
-  margin: 0 auto;
-  margin-top: 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin-left: 0 auto;
+  margin-top: 30px;
 }
 
 .chatContainer {
@@ -21,7 +21,6 @@
   background-color: var(--base2);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -29,7 +28,8 @@
 .chatHeader {
   background-color: var(--base02);
   padding: 1rem;
-  text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .chatTitle {
@@ -66,11 +66,19 @@
   color: var(--base03);
 }
 
+.loadingMessage,
+.errorMessage {
+  align-self: center;
+  background-color: var(--yellow);
+  color: var(--base03);
+}
+
 .inputForm {
   display: flex;
   padding: 1rem;
   background-color: var(--base2);
-  border-top: 1px solid var(--base1);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .input {
@@ -82,53 +90,27 @@
   background-color: var(--base3);
   color: var(--base00);
   margin-right: 0.5rem;
-  resize: none;
+  resize: vertical;
 }
 
-.input:focus {
-  outline: none;
-  border-color: var(--blue);
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.sendButton, .clearButton {
+.sendButton {
   padding: 0.5rem 1rem;
   border: none;
+  background-color: var(--blue);
+  color: var(--base3);
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
-.sendButton {
-  background-color: var(--blue);
-  color: var(--base3);
-}
-
-.sendButton:hover {
+.sendButton:hover:not(:disabled) {
   background-color: var(--cyan);
 }
 
-.clearButton {
-  background-color: var(--red);
-  color: var(--base3);
-}
-
-.clearButton:hover {
-  background-color: var(--orange);
-}
-
-.typingIndicator {
-  align-self: flex-start;
-  background-color: var(--base1);
-  color: var(--base03);
-  padding: 0.5rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
@@ -144,9 +126,4 @@
   .message {
     max-width: 85%;
   }
-}
-
-.loadingMessage {
-  opacity: 0.7;
-  font-style: italic;
 }

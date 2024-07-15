@@ -19,7 +19,7 @@ export default function Login() {
     }
   }, [user, router]);
 
-  const handleClearDatabase = async () => {
+  /*const handleClearDatabase = async () => {
     try {
       const response = await fetch('/navigrowth-education-and-career-management/api/auth/clear-database', {
         method: 'POST',
@@ -34,7 +34,8 @@ export default function Login() {
       console.error('Error clearing database:', error);
       alert('Error clearing database');
     }
-  };
+  };*/ 
+  // database clear function for testing and not accessible to the users
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +92,10 @@ export default function Login() {
         <p className={styles.registerLink}>
           Don&apos;t have an account? <Link href="/register">Register here</Link>
         </p>
-        <button type="button" onClick={handleClearDatabase}>Clear Database</button>
       </div>
     </div>
   );
 }
+
+//<button type="button" onClick={handleClearDatabase}>Clear Database</button>
+// button to clear the database during testing
