@@ -2,6 +2,34 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+To run the Career Advisor Chat project, you need to install the following:
+
+Node.js (version 14.x or later)
+
+This includes npm (Node Package Manager)
+
+
+Next.js (version 13.x or later)
+
+This will be installed via npm when you set up the project
+
+
+React (version 18.x or later)
+
+This will be installed as a dependency of Next.js
+
+
+Google Generative AI SDK
+
+This will be installed as a project dependency
+
+
+
+Additional notes:
+
+The exact versions of Next.js, React, and other dependencies are specified in the package.json file.
+You don't need to manually install these; they will be installed when you run npm install in the project directory.
+
 First, run the development server:
 
 ```bash
